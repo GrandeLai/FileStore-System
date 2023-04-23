@@ -13,7 +13,6 @@ type LoginResponse struct {
 }
 
 type DetailRequest struct {
-	Id int64 `json:"id"`
 }
 
 type DetailResponse struct {

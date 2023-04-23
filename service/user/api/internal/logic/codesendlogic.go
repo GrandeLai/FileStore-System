@@ -3,6 +3,7 @@ package logic
 import (
 	"FileStore-System/common/utils"
 	"context"
+	"crypto/tls"
 	"net/smtp"
 
 	"FileStore-System/service/user/api/internal/svc"
@@ -29,12 +30,12 @@ func NewCodeSendLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CodeSend
 
 func (l *CodeSendLogic) CodeSend(req *types.CodeSendRequest) (resp *types.CodeSendResponse, err error) {
 	e := email.NewEmail()
-	e.From = "VerificationCode by butane-netdisk <" + utils.ServerEmail + ">"
+	e.From = "VerificationCode by jdaw <" + utils.ServerEmail + ">"
 	e.To = []string{req.Email}
 	e.Subject = "This is a VerificationCode!"
 	verificationCode := utils.GenerateVerificationCode()
 	e.Text = []byte(verificationCode)
-	e.Send(utils.EmailSmtpAddr, smtp.PlainAuth("", utils.ServerEmail, utils.EmailAuthCode, utils.EmailSmtpHost))
+	e.SendWithTLS(utils.EmailSmtpAddr, smtp.PlainAuth("", utils.ServerEmail, utils.EmailAuthCode, utils.EmailSmtpHost), &tls.Config{InsecureSkipVerify: true, ServerName: utils.EmailSmtpHost})
 	l.svcCtx.RedisClient.Setex(utils.CacheEmailCodeKey+req.Email, verificationCode, utils.EmailCodeExpireSeconds)
 	return &types.CodeSendResponse{}, nil
 }

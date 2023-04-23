@@ -1,5 +1,5 @@
 CREATE TABLE `user` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id` bigint NOT NULL AUTO_INCREMENT,
     `user_name` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名',
     `user_pwd` varchar(256) NOT NULL DEFAULT '' COMMENT '用户密码',
     `email` varchar(64) DEFAULT '' COMMENT '邮箱',
