@@ -19,11 +19,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/user/detail",
-				Handler: UserDetailHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
 				Path:    "/code/send",
 				Handler: CodeSendHandler(serverCtx),
 			},
@@ -41,6 +36,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/refresh/authorization",
 				Handler: RefreshAuthorizationHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/detail",
+				Handler: UserDetailHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

@@ -1,0 +1,67 @@
+syntax = "v1"
+
+info(
+	title: ""
+	desc: ""
+	author: "JDaw"
+	email: "jdawlai@outlook.com"
+)
+
+type ShareDetailRequest {
+	ShareURL string `json:"share_url"`
+}
+
+type ShareDetailResponse {
+	ShareDetails []*ShareDetail `json:"share_details"`
+}
+
+type ShareDetail {
+	StoreId   string `json:"store_id"`
+	Name      string `json:"name"`
+	Size      int64  `json:"size"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+}
+
+type CreateShareRequest {
+	StoreIds    []string `json:"store_ids"`
+	ExpiredTime int64    `json:"expire_time"`
+}
+
+type CreateShareResponse {
+	ShareURL string `json:"share_url"`
+}
+
+type SaveFromShareRequest {
+	StoreIds   []string `json:"store_ids"`
+	ShareURL   string   `json:"share_url"`
+	ToParentId string   `json:"to_parent_id"` //保存在该parentId目录下
+}
+
+type SaveFromShareResponse {
+}
+
+service share-api {
+	@doc(
+		summary: "获取资源详情"
+	)
+	@handler DetailShare
+	post /share/detail (ShareDetailRequest) returns (ShareDetailResponse)
+}
+
+@server(
+	jwt : Auth
+)
+service share-api {
+	@doc(
+		summary: "创建分享记录"
+	)
+	@handler CreateShare
+	post /share/create (CreateShareRequest) returns (CreateShareResponse)
+	
+	@doc(
+		summary: "资源保存"
+	)
+	@handler SaveFromShare
+	post /share/save (SaveFromShareRequest) returns (ShareDetailResponse)
+}

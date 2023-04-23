@@ -1,0 +1,167 @@
+syntax = "v1"
+
+info(
+	title: ""
+	desc: ""
+	author: "JDaw"
+	email: "jdawlai@outlook.com"
+)
+
+type FileListRequest {
+	ParentId string `json:"parent_id"`     //查询的文件夹id
+	Page     int64  `json:"page,optional"` //查询的第几页
+	Size     int64  `json:"size,optional"` //每页页数
+}
+
+type FileListResponse {
+	List  []*File `json:"list"`
+	Count int64   `json:"count"`
+}
+
+type File {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+	Ext  string `json:"ext"`
+	Path string `json:"path"`
+	Size int64  `json:"size"`
+}
+
+type FolderListRequest {
+	ParentId string `json:"parent_id"`
+	Page     int64  `json:"page,optional"` //查询的第几页
+	Size     int64  `json:"size,optional"` //每页页数
+}
+
+type FolderListResponse {
+	List  []*Folder `json:"list"`
+	Count int64     `json:"count"`
+}
+
+type Folder {
+	Id       string `json:"id"`
+	ParentId string `json:"parent_id"`
+	Name     string `json:"name"`
+}
+
+type FileNameUpdateRequest {
+	Id       string `json:"id"`
+	ParentId string `json:"parent_id"`
+	Name     string `json:"name"`
+}
+
+type FileNameUpdateResponse {
+}
+
+type FolderCreateRequest {
+	ParentId string `json:"parent_id"`
+	Name     string `json:"name"`
+}
+
+type FolderCreateResponse {
+	Id string `json:"id"`
+}
+
+type StoreDeleteRequest {
+	Id       string `json:"id"`
+	ParentId string `json:"parent_id"`
+}
+
+type StoreDeleteResponse {
+}
+
+type FileMoveRequest {
+	Id             string `json:"id"`
+	ParentId       string `json:"parent_id"`
+	TargetParentId string `json:"target_parent_id"`
+}
+
+type FileMoveResponse {
+}
+
+type FileUploadRequest {
+	//传递form值
+	//file file
+}
+
+type FileUploadResponse {
+	Id string `json:"id"`
+}
+
+type FileUploadByChunkRequest {
+	//传递form值
+	//file file
+}
+
+type FileUploadByChunkResponse {
+	Id string `json:"id"`
+}
+
+type FileDownloadRequest {
+	Id string `json:"id"`
+}
+
+@server(
+	jwt : Auth
+)
+service store-api {
+	
+	@doc(
+		summary: "用户文件列表"
+	)
+	@handler FileList
+	post /file/list (FileListRequest) returns (FileListResponse)
+	
+	@doc(
+		summary: "文件夹列表"
+	)
+	@handler FolderList
+	post /folder/list (FolderListRequest) returns (FolderListResponse)
+	
+	@doc(
+		summary: "文件名称修改"
+	)
+	@handler FileNameUpdate
+	post /file/name/update (FileNameUpdateRequest) returns (FileNameUpdateResponse)
+	
+	@doc(
+		summary: "文件夹创建"
+	)
+	@handler FolderCreate
+	post /folder/create (FolderCreateRequest) returns (FolderCreateResponse)
+	
+	@doc(
+		summary: "文件夹删除"
+	)
+	@handler FolderDelete
+	post /folder/delete (StoreDeleteRequest) returns (StoreDeleteResponse)
+	
+	@doc(
+		summary: "文件删除"
+	)
+	@handler FileDelete
+	post /file/delete (StoreDeleteRequest) returns (StoreDeleteResponse)
+	
+	@doc(
+		summary: "文件移动"
+	)
+	@handler FileMove
+	post /file/move (FileMoveRequest) returns (FileMoveResponse)
+	
+	@doc(
+		summary: "文件上传"
+	)
+	@handler FileUpload
+	post /file/upload (FileUploadRequest) returns (FileUploadResponse)
+	
+	@doc(
+		summary: "文件分片上传"
+	)
+	@handler FileUploadByChunk
+	post /file/chunk/upload (FileUploadByChunkRequest) returns (FileUploadByChunkResponse)
+	
+	@doc(
+		summary: "文件下载"
+	)
+	@handler FileDownload
+	get /file/download (FileDownloadRequest)
+}

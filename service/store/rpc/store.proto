@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package store;
+
+option go_package = "./store";
+
+message StoreIdRequest{
+  int64 storeId = 1;
+}
+
+message StoreNameResponse{
+  string storeName = 1;
+}
+
+message CreateByShareRequest{
+  int64 userId = 1;
+  int64 parentId = 2;
+  int64 storeId = 3;
+  string name = 4;
+}
+
+message CreateByShareResponse{
+  int64 id = 1;
+}
+
+message CreateByShareInBatchRequest{
+  repeated CreateByShareRequest createByShareRequest=1;
+}
+
+message CreateByShareInBatchResponse{
+}
+
+message StoreIdsRequest{
+  repeated int64 storeIds=1;
+}
+
+message StoreInfosResponse{
+  repeated StoreInfo storeInfo=1;
+}
+
+message StoreInfo {
+  int64 storeId=1;
+  string ext = 2;
+  int64 size = 3;
+  string path = 4;
+  string name = 5;
+}
+
+service store {
+  rpc getStoreNameByStoreId(StoreIdRequest) returns(StoreNameResponse);
+  rpc createByShare(CreateByShareRequest) returns(CreateByShareResponse);
+  rpc createByShareInBatch(CreateByShareInBatchRequest) returns(CreateByShareInBatchResponse);
+  rpc getStoreInfoInBatchByStoreId(StoreIdsRequest) returns (StoreInfosResponse);
+}

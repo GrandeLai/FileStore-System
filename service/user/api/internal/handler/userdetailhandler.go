@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"FileStore-System/common/response"
 	"net/http"
 
 	"FileStore-System/service/user/api/internal/logic"
@@ -18,11 +19,7 @@ func UserDetailHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := logic.NewUserDetailLogic(r.Context(), svcCtx)
-		resp, err := l.UserDetail(&req)
-		if err != nil {
-			httpx.Error(w, err)
-		} else {
-			httpx.OkJson(w, resp)
-		}
+		resp, err := l.UserDetail(&req, r.Header.Get("Authorization"))
+		response.Response(w, resp, err)
 	}
 }
