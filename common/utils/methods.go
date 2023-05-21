@@ -30,7 +30,7 @@ func GenerateUUID() string {
 	return uuid.NewV4().String()
 }
 
-func GenerateJwtToken(secreKey string, iat, seconds int64, userId int64) (string, error) {
+func GenerateJwtToken(secreKey string, iat, seconds, userId int64) (string, error) {
 	claims := make(jwt.MapClaims)
 	claims["exp"] = iat + seconds
 	claims["iat"] = iat

@@ -41,7 +41,6 @@ code/test/
 test/
 **/test/
 
-*.yaml
 
 common/utils/constants.go
 
