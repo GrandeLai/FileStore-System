@@ -1,6 +1,7 @@
-Name: user-api
-Host: 127.0.0.1
-Port: 8001
+Name: share-api
+Host: 0.0.0.0
+Port: 8003
+TimeOut: 100000
 Mysql:
   DataSource: root:123456@tcp(localhost:3306)/filestore_system?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 Auth:
@@ -13,4 +14,9 @@ Redis:
 CacheRedis:
   - Host: 127.0.0.1:6379
     Pass:
-Salt: b2cfcd59-86d4-413f-8e62-c15c7be7badf
+StoreRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: store.rpc
+  TimeOut: 100000
